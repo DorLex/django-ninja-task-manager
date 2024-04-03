@@ -5,8 +5,10 @@ from users.schemas import UserOutSchema
 
 
 class TaskSchema(ModelSchema):
-    user: UserOutSchema
-
     class Meta:
         model = Task
         fields = '__all__'
+
+
+class TaskWithOwnerSchema(TaskSchema):
+    user: UserOutSchema

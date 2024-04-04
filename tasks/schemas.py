@@ -10,5 +10,24 @@ class TaskSchema(ModelSchema):
         fields = '__all__'
 
 
+class TaskCreateSchema(ModelSchema):
+    class Meta:
+        model = Task
+        fields = (
+            'title',
+            'description',
+        )
+
+
+class TaskUpdateSchema(ModelSchema):
+    class Meta:
+        model = Task
+        fields = (
+            'title',
+            'description',
+            'status',
+        )
+
+
 class TaskWithOwnerSchema(TaskSchema):
     user: UserOutSchema

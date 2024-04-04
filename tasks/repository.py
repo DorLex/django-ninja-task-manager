@@ -1,8 +1,4 @@
-from asgiref.sync import sync_to_async
-from django.core.exceptions import ValidationError
 from django.shortcuts import aget_object_or_404, aget_list_or_404
-from ninja_extra import status
-from ninja_extra.exceptions import APIException
 
 from tasks.models import Task
 from tasks.schemas import TaskCreateSchema, TaskUpdateSchema
@@ -29,13 +25,5 @@ class TaskRepository:
         for attr, value in task_data.dict().items():
             setattr(task, attr, value)
 
-        try:
-            await sync_to_async(task.full_clean)()
-            await task.asave()
-            return task
-
-        except ValidationError as ex:
-            raise APIException(
-                detail=ex.error_dict,
-                code=status.HTTP_400_BAD_REQUEST
-            )
+        await task.asave()
+        return task

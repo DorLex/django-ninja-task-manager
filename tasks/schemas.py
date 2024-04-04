@@ -1,25 +1,19 @@
 from ninja import ModelSchema
 
+from tasks.enums import TaskStatus
 from tasks.models import Task
 from users.schemas import UserOutSchema
 
 
-class TaskSchema(ModelSchema):
+class TaskOutSchema(ModelSchema):
     class Meta:
         model = Task
         fields = '__all__'
 
 
 class TaskCreateSchema(ModelSchema):
-    class Meta:
-        model = Task
-        fields = (
-            'title',
-            'description',
-        )
+    status: TaskStatus = TaskStatus.created
 
-
-class TaskUpdateSchema(ModelSchema):
     class Meta:
         model = Task
         fields = (
@@ -29,5 +23,17 @@ class TaskUpdateSchema(ModelSchema):
         )
 
 
-class TaskWithOwnerSchema(TaskSchema):
+class TaskUpdateSchema(ModelSchema):
+    status: TaskStatus
+
+    class Meta:
+        model = Task
+        fields = (
+            'title',
+            'description',
+            'status',
+        )
+
+
+class TaskWithOwnerSchema(TaskOutSchema):
     user: UserOutSchema

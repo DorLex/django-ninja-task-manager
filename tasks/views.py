@@ -14,7 +14,7 @@ task_repository = TaskRepository()
 
 @router.get('/', response=list[TaskOutSchema])
 async def list_tasks(request, filters: TaskFilter = Query(), ordering: TaskOrdering = Query()):
-    """Список задач с фильтрами"""
+    """Список задач с фильтрами и сортировкой"""
 
     tasks: list[Task] = await task_repository.list(request.user.id, filters, ordering)
     return tasks

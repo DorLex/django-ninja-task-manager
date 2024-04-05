@@ -1,6 +1,7 @@
 from django.shortcuts import aget_object_or_404, aget_list_or_404
 
 from tasks.filters.filter import TaskFilter
+from tasks.filters.ordering import TaskOrdering
 from tasks.models import Task
 from tasks.schemas import TaskCreateSchema, TaskUpdateSchema
 
@@ -12,9 +13,11 @@ class TaskRepository:
         task = await aget_object_or_404(self._model, pk=task_id, user_id=user_id)
         return task
 
-    async def list(self, user_id: int, filters: TaskFilter) -> list[Task]:
+    async def list(self, user_id: int, filters: TaskFilter, ordering: TaskOrdering) -> list[Task]:
         qs = self._model.objects.filter(user_id=user_id)
         qs = filters.filter(qs)
+        qs = ordering.order(qs)
+        
         tasks = await aget_list_or_404(qs)
 
         return tasks

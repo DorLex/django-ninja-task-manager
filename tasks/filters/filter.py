@@ -8,7 +8,7 @@ class TaskFilter(FilterSchema):
     title: str | None = None
     status: TaskStatus | None = Query(
         default=None,
-        description='Доступные статусы: created, active, completed',
+        description=f'Доступные статусы: {TaskStatus.values}',
     )
 
     def filter_title(self, value: bool) -> Q:

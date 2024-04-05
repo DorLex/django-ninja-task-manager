@@ -1,6 +1,7 @@
-from ninja import Router
+from ninja import Router, Query
 from ninja_jwt.authentication import AsyncJWTAuth
 
+from tasks.filters.filter import TaskFilter
 from tasks.models import Task
 from tasks.repository import TaskRepository
 from tasks.schemas import TaskOutSchema, TaskCreateSchema, TaskUpdateSchema
@@ -11,8 +12,8 @@ task_repository = TaskRepository()
 
 
 @router.get('/', response=list[TaskOutSchema])
-async def list_tasks(request):
-    tasks: list[Task] = await task_repository.list(request.user.id)
+async def list_tasks(request, filters: TaskFilter = Query()):
+    tasks: list[Task] = await task_repository.list(request.user.id, filters)
     return tasks
 
 

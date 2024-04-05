@@ -14,29 +14,39 @@ task_repository = TaskRepository()
 
 @router.get('/', response=list[TaskOutSchema])
 async def list_tasks(request, filters: TaskFilter = Query(), ordering: TaskOrdering = Query()):
+    """Список задач с фильтрами"""
+
     tasks: list[Task] = await task_repository.list(request.user.id, filters, ordering)
     return tasks
 
 
 @router.get('/{task_id}', response=TaskOutSchema)
 async def get_task(request, task_id: int):
+    """Получение задачи"""
+
     task: Task = await task_repository.get(task_id, request.user.id)
     return task
 
 
 @router.post('/', response=TaskOutSchema)
 async def create_task(request, task_data: TaskCreateSchema):
+    """Создание задачи"""
+
     task: Task = await task_repository.create(task_data, request.user.id)
     return task
 
 
 @router.put('/{task_id}', response=TaskOutSchema)
 async def update_task(request, task_id: int, task_data: TaskUpdateSchema):
+    """Обновление задачи"""
+
     task: Task = await task_repository.update(task_id, task_data, request.user.id)
     return task
 
 
 @router.delete('/{task_id}', response=TaskOutSchema)
 async def delete_task(request, task_id: int):
+    """Удаление задачи"""
+
     task: Task = await task_repository.delete(task_id, request.user.id)
     return task

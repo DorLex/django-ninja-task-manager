@@ -27,3 +27,8 @@ class TaskRepository:
 
         await task.asave()
         return task
+
+    async def delete(self, task_id: int, user_id: int):
+        task = await aget_object_or_404(self._model, pk=task_id, user_id=user_id)
+        await task.adelete()
+        return task

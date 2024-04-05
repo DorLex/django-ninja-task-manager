@@ -32,3 +32,9 @@ async def create_task(request, task_data: TaskCreateSchema):
 async def update_task(request, task_id: int, task_data: TaskUpdateSchema):
     task: Task = await task_repository.update(task_id, task_data, request.user.id)
     return task
+
+
+@router.delete('/{task_id}', response=TaskOutSchema)
+async def delete_task(request, task_id: int):
+    task: Task = await task_repository.delete(task_id, request.user.id)
+    return task

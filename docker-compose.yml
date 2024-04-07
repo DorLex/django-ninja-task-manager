@@ -11,5 +11,14 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
 
+  rabbitmq:
+    image: rabbitmq:3.13.1-management-alpine
+    env_file:
+      - .env
+    restart: unless-stopped
+    ports:
+      - "${RABBITMQ_PORT}:5672"
+      - "${RABBITMQ_MANAGEMENT_PLUGIN_PORT}:15672"
+
 volumes:
   postgres_data:

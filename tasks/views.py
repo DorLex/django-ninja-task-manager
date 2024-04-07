@@ -6,6 +6,7 @@ from tasks.filters.ordering import TaskOrdering
 from tasks.models import Task
 from tasks.repository import TaskRepository
 from tasks.schemas import TaskOutSchema, TaskCreateSchema, TaskUpdateSchema
+from tasks.tasks import send_notification
 
 router = Router(auth=AsyncJWTAuth())
 
@@ -25,6 +26,8 @@ async def get_task(request, task_id: int):
     """Получение задачи"""
 
     task: Task = await task_repository.get(task_id, request.user.id)
+    send_notification.delay(message='OK')
+
     return task
 
 

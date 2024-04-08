@@ -5,7 +5,6 @@ from ninja_jwt.tokens import AccessToken
 
 from tasks.enums import TaskStatus
 from tasks.models import Task
-from tasks.schemas import TaskOutSchema
 
 User = get_user_model()
 

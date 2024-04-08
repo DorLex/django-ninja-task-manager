@@ -18,3 +18,6 @@ flower_run:
 
 docker_run:
 	docker compose up --build
+
+test:
+	$(MANAGE) test

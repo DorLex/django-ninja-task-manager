@@ -27,5 +27,8 @@ class TaskNegativeTest(TestCase):
             data={},
             content_type='application/json',
         )
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
+    async def test_delete_task(self):
+        response = await self.async_client.delete(f'{self.base_url}1')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

@@ -5,11 +5,12 @@ from ninja_jwt.tokens import AccessToken
 
 from tasks.enums import TaskStatus
 from tasks.models import Task
+from tasks.schemas import TaskOutSchema
 
 User = get_user_model()
 
 
-class TaskTest(TestCase):
+class TaskPositiveTest(TestCase):
     base_url = '/api/tasks/'
 
     @classmethod
@@ -82,3 +83,11 @@ class TaskTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response_data.get('id'), self.task.id)
         self.assertEqual(response_data.get('status'), self.task_update_data.get('status'))
+
+    async def test_delete_task(self):
+        response = await self.async_client.delete(f'{self.base_url}{self.task.id}', headers=self.headers)
+        response_data = response.json()
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response_data.get('id'), None)
+        self.assertEqual(response_data.get('title'), self.task.title)

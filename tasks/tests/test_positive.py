@@ -43,7 +43,6 @@ class TaskTest(TestCase):
         response = await self.async_client.get(self.base_url, headers=self.headers)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
         task_count = await Task.objects.acount()
         self.assertEqual(len(response.json()), task_count)
 
@@ -65,10 +64,8 @@ class TaskTest(TestCase):
         response_data = response.json()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
         task_count = await Task.objects.acount()
         self.assertEqual(2, task_count)
-
         self.assertEqual(response_data.get('title'), self.task_data.get('title'))
         self.assertEqual(response_data.get('status'), TaskStatus.created)
         self.assertEqual(response_data.get('user'), self.user.id)

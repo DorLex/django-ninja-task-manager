@@ -10,8 +10,11 @@ superuser:
 run:
 	uvicorn core.asgi:application --reload
 
-celery_run:
+worker_run:
 	celery -A celery_layer.celery_app:app worker -l INFO
+
+beat_run:
+	celery -A celery_layer.celery_app:app beat -l INFO
 
 flower_run:
 	celery -A celery_layer.celery_app:app flower --conf='./celery_layer/flower_config.py'

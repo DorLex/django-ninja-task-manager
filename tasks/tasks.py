@@ -5,7 +5,7 @@ from celery import shared_task
 
 @shared_task
 def send_notification(message):
-    sleep(5)
-    print(f'Send {message=}')
-    
+    sleep(3)
+    print(f'<Send {message=}>')
+
     return message

@@ -1,30 +1,39 @@
-from time import sleep
-
 from celery import shared_task
+from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
 
 User = get_user_model()
 
 
 @shared_task
-def send_notification(message):
-    sleep(3)
-    print(f'<Send {message=}>')
+def send_notification(subject: str, message: str, email: str):
+    send_mail(
+        f'{subject}',
+        f'Сообщение: {message}',
+        settings.EMAIL_HOST_USER,
+        [email]
+    )
 
-    return message
+    return subject, message, email
 
 
 @shared_task
-def send_many_notifications():
+def send_notification_for_all_users(subject: str, message: str):
     offset = 0
-    chunk_size = 3
+    chunk_size = 200
 
-    user_emails = User.objects.all()[offset:offset + chunk_size].values_list('email', flat=True)
+    users_email = User.objects.all()[offset:offset + chunk_size].values_list('email', flat=True)
 
-    while user_emails:
-        print(f'<Send notifications for {user_emails=}>')
+    while users_email:
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            users_email
+        )
 
         offset += chunk_size
-        user_emails = User.objects.all()[offset:offset + chunk_size].values_list('email', flat=True)
+        users_email = User.objects.all()[offset:offset + chunk_size].values_list('email', flat=True)
 
     return True

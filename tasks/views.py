@@ -26,8 +26,6 @@ async def get_task(request, task_id: int):
     """Получение задачи"""
 
     task: Task = await task_repository.get(task_id, request.user.id)
-    send_notification.delay(message='OK')
-
     return task
 
 

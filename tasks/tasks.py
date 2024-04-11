@@ -23,9 +23,11 @@ def send_notification_for_all_users(subject: str, message: str):
     offset = 0
     chunk_size = 200
 
-    users_email = User.objects.all()[offset:offset + chunk_size].values_list('email', flat=True)
+    while True:
+        users_email = User.objects.all()[offset:offset + chunk_size].values_list('email', flat=True)
+        if not users_email:
+            break
 
-    while users_email:
         send_mail(
             subject,
             message,
@@ -34,6 +36,5 @@ def send_notification_for_all_users(subject: str, message: str):
         )
 
         offset += chunk_size
-        users_email = User.objects.all()[offset:offset + chunk_size].values_list('email', flat=True)
 
     return True

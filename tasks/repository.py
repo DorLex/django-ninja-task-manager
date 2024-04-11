@@ -17,7 +17,7 @@ class TaskRepository:
         qs = self._model.objects.filter(user_id=user_id)
         qs = filters.filter(qs)
         qs = ordering.order(qs)
-        
+
         tasks = await aget_list_or_404(qs)
 
         return tasks
